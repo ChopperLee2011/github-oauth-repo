@@ -1,0 +1,11 @@
+<div ng-include="'views/navbar.html'"></div>
+<section ng-controller="issueCtrl" class="col-md-4 col-md-offset-4" ng-init="issueDetail()">
+
+    <div class="page-header">
+        <p>this is the issue detail page</p>
+    </div>
+    <h5>{{ repoIssue.title }}</h5>
+    <div>
+        {{repoIssue.body}}
+    </div>
+</section>

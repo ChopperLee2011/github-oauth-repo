@@ -1,0 +1,25 @@
+{
+  "name": "oauth-github",
+  "version": "0.0.1",
+  "authors": [
+    "chopperlee <lihengpro@gmail.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/lib"
+  ],
+  "dependencies": {
+    "angularjs": "~1.3.1",
+    "bootstrap": "~3.2.1",
+    "bootstrap-css": "~3.2.0",
+    "bootstrap-social": "~4.8.0",
+    "angular-resource": "~1.3.4",
+    "angular-cookies": "~1.3.4",
+    "angular-route": "~1.3.4",
+    "font-awesome": ">=4.1.0",
+
+  }
+}

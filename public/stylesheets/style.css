@@ -1,21 +1,18 @@
 body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+    padding: 50px;
+    font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-
 a {
-  color: #00B7FF;
+    color: #00B7FF;
+    cursor: pointer;
 }
-
 .center-block {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
-
-.value-line{
-  margin-bottom:1px;
-  background:green;
-  color:white;
-
+.value-line {
+    margin-bottom: 1px;
+    background: green;
+    color: white;
 }

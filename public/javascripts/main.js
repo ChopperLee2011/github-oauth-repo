@@ -1,12 +1,8 @@
-angular.module('oauth', ['ngRoute', 'ngResource'])
-    .config(function($routeProvider, $locationProvider) {
+angular.module('oauth', ['ngRoute', 'ngResource', 'ngCookies'])
+    .config(function($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider
             .when('/', {
-                redirectTo: '/login'
-            })
-            .when('/login', {
-                templateUrl: 'views/login.html',
-                controller: 'authCtrl'
+                redirectTo: '/repos'
             })
             .when('/repos', {
                 templateUrl: 'views/repos.html'
@@ -18,9 +14,10 @@ angular.module('oauth', ['ngRoute', 'ngResource'])
                 templateUrl: 'views/issue.html'
             })
             .otherwise({
-                redirectTo: '/'
+                redirectTo: '/login'
             });
         $locationProvider.html5Mode(true);
+        $httpProvider.interceptors.push('authInterceptor');
     })
     .factory('authInterceptor', function($rootScope, $q, $cookieStore, $location) {
         return {
@@ -30,6 +27,7 @@ angular.module('oauth', ['ngRoute', 'ngResource'])
                 if ($cookieStore.get('token')) {
                     config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
                 }
+                // console.log(config);
                 return config;
             },
 
@@ -46,35 +44,26 @@ angular.module('oauth', ['ngRoute', 'ngResource'])
             }
         };
     })
-    .factory('User', function($resource) {
-        return $resource('/api/users/:id/:controller', {
-            id: '@_id'
-        }, {
-            get: {
-                method: 'GET'
-            }
+    // .controller('navCtrl', ['$scope', '$window', function($scope, $window) {
+    //     $scope.getCurrentUser = function() {
+    //         return 'tester';
+    //     };
+    //     $scope.logOut = function() {
+    //         $window.location.href = '/auth/logout';
+    //     }
+    // }])
+    // .controller('authCtrl', ['$scope', '$window', function($scope, $window) {
+    //     $scope.loginOauth = function(provider) {
+    //         $window.location.href = '/auth/github';
+    //     };
+    // }])
+    .run(function($rootScope, $location, Auth) {
+        // Redirect to login if route requires auth and you're not logged in
+        $rootScope.$on('$routeChangeStart', function(event, next) {
+            Auth.isLoggedInAsync(function(loggedIn) {
+                if (next.authenticate && !loggedIn) {
+                    $location.path('/login');
+                }
+            });
         });
-    })
-    .controller('navCtrl', ['$scope','$window',function($scope,$window) {
-        $scope.getCurrentUser = function(){
-            return 'tester';
-        };
-        $scope.logOut = function(){
-            $window.location.href = '/auth/logout';
-        }
-    }])
-    .controller('authCtrl', ['$scope', '$window', function($scope, $window) {
-        $scope.loginOauth = function(provider) {
-            $window.location.href = '/auth/github';
-        };
-    }]);
-// .run(function($rootScope, $location, Auth) {
-//     // Redirect to login if route requires auth and you're not logged in
-//     $rootScope.$on('$routeChangeStart', function(event, next) {
-//         Auth.isLoggedInAsync(function(loggedIn) {
-//             if (next.authenticate && !loggedIn) {
-//                 $location.path('/login');
-//             }
-//         });
-//     });
-// });
+    });

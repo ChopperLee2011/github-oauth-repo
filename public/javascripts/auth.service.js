@@ -2,23 +2,19 @@
 
 angular.module('oauth')
     .factory('User', function($resource) {
-        return $resource('/api/users/:id/:controller', {
-            id: '@_id'
-        }, {
+        return $resource('/api/user/me', {
             get: {
-                method: 'GET',
-                params: {
-                    id: 'me'
-                }
+                method: 'GET'
             }
         });
     })
     .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
         var currentUser = {};
         if ($cookieStore.get('token')) {
-            currentUser = User.get();
+            currentUser = User.get({},function(){
+                console.log('currentUser:' + currentUser.name);
+            });
         }
-
         return {
 
             /**

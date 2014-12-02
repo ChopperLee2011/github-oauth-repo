@@ -7,10 +7,10 @@ angular.module('oauth', ['ngRoute', 'ngResource', 'ngCookies'])
             .when('/repos', {
                 templateUrl: 'views/repos.html'
             })
-            .when('/repo/:repoName', {
+            .when('/repos/repo/:repoName', {
                 templateUrl: 'views/repodetail.html'
             })
-            .when('/repo/:repoName/:issueNumber', {
+            .when('/repos/repo/:repoName/:issueNum', {
                 templateUrl: 'views/issue.html'
             })
             .otherwise({
@@ -44,19 +44,6 @@ angular.module('oauth', ['ngRoute', 'ngResource', 'ngCookies'])
             }
         };
     })
-    // .controller('navCtrl', ['$scope', '$window', function($scope, $window) {
-    //     $scope.getCurrentUser = function() {
-    //         return 'tester';
-    //     };
-    //     $scope.logOut = function() {
-    //         $window.location.href = '/auth/logout';
-    //     }
-    // }])
-    // .controller('authCtrl', ['$scope', '$window', function($scope, $window) {
-    //     $scope.loginOauth = function(provider) {
-    //         $window.location.href = '/auth/github';
-    //     };
-    // }])
     .run(function($rootScope, $location, Auth) {
         // Redirect to login if route requires auth and you're not logged in
         $rootScope.$on('$routeChangeStart', function(event, next) {

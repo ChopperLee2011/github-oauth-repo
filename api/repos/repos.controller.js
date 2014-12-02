@@ -1,9 +1,17 @@
 'use strict';
 var Github = require('github-api');
-var github = new Github({
-    token: "ea64feb91963354135d33e48fadce0927261baa8",
-    auth: "oauth"
-});
+
+function getAccessToken(req, res) {
+        return new Github({
+            token: req.session.gitHubAccessToken,
+            auth: "oauth"
+        });
+    }
+    // var github = new Github({
+    //     // token: "ea64feb91963354135d33e48fadce0927261baa8",
+    //     token:"",
+    //     auth: "oauth"
+    // });
 
 // var repo = github.getRepo('ChopperLee2011', "chat-websocket");
 // repo.show(function(err, repo) {
@@ -11,14 +19,14 @@ var github = new Github({
 // });
 
 exports.list = function(req, res) {
-    var user = github.getUser();
+    var user = getAccessToken(req).getUser();
     user.repos(function(err, repos) {
         return res.json(200, repos);
     });
 };
 exports.showIssue = function(req, res) {
 
-    var issues = github.getIssues('ChopperLee2011', req.params.repoName);
+    var issues = getAccessToken(req).getIssues('ChopperLee2011', req.params.repoName);
     issues.list(null, function(err, issues) {
         return res.json(200, issues);
     });
@@ -27,7 +35,7 @@ exports.showIssue = function(req, res) {
 exports.showIssueDetail = function(req, res) {
     console.log('hello');
     console.log('req.params.repoName, req.params.issueNum: ' + req.params.repoName + ',' + req.params.issueNum);
-    var issue = github.getIssue('ChopperLee2011', req.params.repoName, req.params.issueNum);
+    var issue = getAccessToken(req).getIssue('ChopperLee2011', req.params.repoName, req.params.issueNum);
     issue.list(null, function(err, issue) {
         return res.json(200, issue);
     });

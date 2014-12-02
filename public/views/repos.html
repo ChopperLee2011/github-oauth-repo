@@ -1,7 +1,7 @@
 <div ng-include="'views/navbar.html'"></div>
 <div ng-controller="reposCtrl" class="col-md-4 col-md-offset-4" ng-init="find()">
     <div class="list-group">
-        <a ng-repeat="repo in repos" ng-href="/repo/{{repo.name}}" class="list-group-item">
+        <a ng-repeat="repo in repos" ng-href="/repos/repo/{{repo.name}}" class="list-group-item">
             <small ng-bind="repo.name"></small>
         </a>
     </div>

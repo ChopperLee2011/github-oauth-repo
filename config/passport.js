@@ -5,7 +5,6 @@ var configAuth = require('./auth');
 
 module.exports = function(passport) {
     passport.serializeUser(function(user, done) {
-        // console.log('serializeUser: ' + user.id);
         done(null, user.id);
     });
     passport.deserializeUser(function(id, done) {
@@ -17,11 +16,13 @@ module.exports = function(passport) {
     passport.use(new GithubStrategy({
         clientID: configAuth.githubAuth.GITHUB_CLIENT_ID,
         clientSecret: configAuth.githubAuth.GITHUB_CLIENT_SECRET,
-        callbackURL: configAuth.githubAuth.CALLBACK_URL
-    }, function(accessToken, refreshToken, profile, done) {
+        callbackURL: configAuth.githubAuth.CALLBACK_URL,
+        passReqToCallback: true
+    }, function(req, accessToken, refreshToken, profile, done) {
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
+            req.session.gitHubAccessToken = accessToken;
             User.findOne({
                 oauthID: profile.id
             }, function(err, user) {
@@ -33,6 +34,8 @@ module.exports = function(passport) {
                 } else {
                     var newUser = new User({
                         oauthID: profile.id,
+                        accessToken:accessToken,
+                        avatarurl:profile.avatar_url,
                         name: profile.displayName,
                         username: profile.username,
                         role: 'user',

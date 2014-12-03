@@ -1,5 +1,7 @@
 'use strict';
-
+/**
+ *
+ */
 angular.module('oauth')
     .factory('User', function($resource) {
         return $resource('/api/user/me', {
@@ -52,12 +54,6 @@ angular.module('oauth')
                 } else {
                     cb(false);
                 }
-            },
-            /**
-             * Get auth token
-             */
-            getToken: function() {
-                return $cookieStore.get('token');
             }
         };
     });

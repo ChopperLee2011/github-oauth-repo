@@ -1,4 +1,4 @@
-angular.module('oauth', ['ngRoute', 'ngResource', 'ngCookies'])
+angular.module('oauth', ['ngRoute', 'ngResource', 'ngCookies',  'ngSanitize'])
     .config(function($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider
             .when('/', {

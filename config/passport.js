@@ -22,20 +22,20 @@ module.exports = function(passport) {
         // make the code asynchronous
         // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
-            req.session.gitHubAccessToken = accessToken;
             User.findOne({
                 oauthID: profile.id
             }, function(err, user) {
                 if (err) {
                     return done(err);
                 }
+                req.session.gitHubAccessToken = accessToken;
+                req.session.userName = profile.username;
                 if (!err && user !== null) {
                     return done(null, user);
                 } else {
                     var newUser = new User({
                         oauthID: profile.id,
-                        accessToken:accessToken,
-                        avatarurl:profile.avatar_url,
+                        avatarurl: profile.avatar_url,
                         name: profile.displayName,
                         username: profile.username,
                         role: 'user',
@@ -45,7 +45,7 @@ module.exports = function(passport) {
                         if (err) {
                             throw (err);
                         } else {
-                            console.log("saving user ...");
+                            // console.log("saving user ...");
                             return done(null, newUser);
                         }
                     });

@@ -1,7 +1,5 @@
 'use strict';
-/**
- *
- */
+
 angular.module('oauth')
     .factory('User', function($resource) {
         return $resource('/api/user/me', {
@@ -10,18 +8,12 @@ angular.module('oauth')
             }
         });
     })
-    .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore, $q) {
+    .factory('Auth', function Auth(User, $cookieStore, $q) {
         var currentUser = {};
         if ($cookieStore.get('token')) {
             currentUser = User.get();
         }
         return {
-
-            /**
-             * Delete access token and user info
-             *
-             * @param  {Function}
-             */
             logout: function() {
                 $cookieStore.remove('token');
                 currentUser = {};
@@ -29,14 +21,8 @@ angular.module('oauth')
             getCurrentUser: function() {
                 return currentUser;
             },
-
-            /**
-             * Check if a user is logged in
-             *
-             * @return {Boolean}
-             */
             isLoggedIn: function() {
-                return currentUser.hasOwnProperty('role');
+                return $cookieStore.get('token');
             },
 
             /**
@@ -49,11 +35,11 @@ angular.module('oauth')
                     }).catch(function() {
                         cb(false);
                     });
-                } else if (currentUser.hasOwnProperty('role')) {
+                } else if ($cookieStore.get('token')) {
                     cb(true);
                 } else {
                     cb(false);
                 }
-            }
+            },
         };
     });

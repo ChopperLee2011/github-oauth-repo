@@ -1,5 +1,5 @@
 'use strict';
-var Github = require('github-api');
+var Github = require('../auth/github-api');
 var markdown = require('markdown').markdown;
 
 function getAccessToken(req, res) {
@@ -15,7 +15,8 @@ exports.list = function(req, res) {
         return res.json(200, repos);
     });
 };
-exports.showIssue = function(req, res) {
+
+exports.showIssues = function(req, res) {
     var issues = getAccessToken(req).getIssues(req.session.userName, req.params.repoName);
     issues.list(null, function(err, issues) {
         return res.json(200, issues);
@@ -23,7 +24,6 @@ exports.showIssue = function(req, res) {
 };
 
 exports.showIssueDetail = function(req, res) {
-    // console.log('req.params.repoName, req.params.issueNum: ' + req.params.repoName + ',' + req.params.issueNum);
     var issue = getAccessToken(req).getIssue(req.session.userName, req.params.repoName, req.params.issueNum);
     issue.list(null, function(err, issue) {
         issue.body = markdown.toHTML(issue.body);

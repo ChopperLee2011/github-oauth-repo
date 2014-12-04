@@ -36,11 +36,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser());
 app.use(session({
     secret: 'github-oauth',
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     store: new mongoStore({
         mongoose_connection: mongoose.connection
-    })
+    }),
+    unset: 'destroy'
 }));
 app.use(passport.initialize());
 app.use(passport.session());

@@ -7,11 +7,6 @@ var validateJwt = expressJwt({
     secret: 'github-oauth'
 });
 
-
-/**
- * Attaches the user object to the request if authenticated
- * Otherwise returns 403
- */
 function isAuthenticated() {
     return compose()
         // Validate jwt
@@ -21,7 +16,6 @@ function isAuthenticated() {
         })
         // Attach user to request
         .use(function(req, res, next) {
-            // console.log('req.user._id: '+ req.user._id);
             User.findById(req.user._id, function(err, user) {
                 if (err) return next(err);
                 if (!user) return res.send(401);

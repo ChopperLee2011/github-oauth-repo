@@ -1,6 +1,7 @@
 <div ng-include="'views/navbar.html'"></div>
-<section ng-controller="reposCtrl" class="col-md-4 col-md-offset-4" ng-init="findOne()">
+<section ng-controller="reposCtrl" class="col-md-4 col-md-offset-4" ng-init="repoDetail()">
     <div class="list-group">
+        <small ng-show="issues.length === 0" class="list-group-item"> no issue, well done </small>
         <a ng-repeat="issue in issues" ng-href="/repos/repo/{{repoName}}/{{issue.number}}" class="list-group-item">
             <span class="glyphicon glyphicon-exclamation-sign" ng-if="issue.state==='open'"></span>
             <span class="glyphicon glyphicon-ok-circle" ng-if="issue.state==='closed'"> </span> <small ng-bind="issue.title"></small>

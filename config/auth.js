@@ -1,7 +1,3 @@
-/**
- * [exports description]
- * @type {Object}
- */
 module.exports = {
     'githubAuth': {
         "GITHUB_CLIENT_ID": "285539e1c4dbb3042bb5",

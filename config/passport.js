@@ -17,10 +17,9 @@ module.exports = function(passport) {
         clientID: configAuth.githubAuth.GITHUB_CLIENT_ID,
         clientSecret: configAuth.githubAuth.GITHUB_CLIENT_SECRET,
         callbackURL: configAuth.githubAuth.CALLBACK_URL,
+        //config the passport pass value to req
         passReqToCallback: true
     }, function(req, accessToken, refreshToken, profile, done) {
-        // make the code asynchronous
-        // User.findOne won't fire until we have all our data back from Google
         process.nextTick(function() {
             User.findOne({
                 oauthID: profile.id
@@ -28,8 +27,10 @@ module.exports = function(passport) {
                 if (err) {
                     return done(err);
                 }
+                //set value to session
                 req.session.gitHubAccessToken = accessToken;
                 req.session.userName = profile.username;
+                req.session.oauthID = profile.id;
                 if (!err && user !== null) {
                     return done(null, user);
                 } else {
@@ -41,11 +42,11 @@ module.exports = function(passport) {
                         role: 'user',
                         created: Date.now()
                     });
+                    //save user
                     newUser.save(function(err) {
                         if (err) {
                             throw (err);
                         } else {
-                            // console.log("saving user ...");
                             return done(null, newUser);
                         }
                     });

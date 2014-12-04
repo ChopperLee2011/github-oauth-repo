@@ -11,17 +11,11 @@ module.exports = function(app, passport) {
     app.get('/login', function(req, res) {
         res.sendFile(app.get('views') + '/login.html');
     });
-
-
-    // app.get('/repos', function(req, res) {
-    //     res.sendFile(app.get('views')+'/index.html');
-    // });
-
     // route for logging out
     app.get('/logout', function(req, res) {
-        console.log('begin logout');
+        req.logout();
         req.session.destroy();
-        res.redirect('/login');
+        res.redirect('/');
     });
 
     app.get('/api/auth/github', passport.authenticate('github', {
@@ -33,7 +27,7 @@ module.exports = function(app, passport) {
         passport.authenticate('github', {
             // successRedirect: '/',
             failureRedirect: '/login',
-            session: false
+            session: true
         }),
         function(req, res) {
             if (!req.user) return res.json(404, {

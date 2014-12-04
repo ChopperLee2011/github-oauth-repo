@@ -1,4 +1,6 @@
-angular.module('oauth', ['ngRoute', 'ngResource', 'ngCookies',  'ngSanitize'])
+'use strict';
+
+angular.module('oauth', ['ngRoute', 'ngResource', 'ngCookies', 'ngSanitize'])
     .config(function($routeProvider, $locationProvider, $httpProvider) {
         $routeProvider
             .when('/', {
@@ -44,12 +46,12 @@ angular.module('oauth', ['ngRoute', 'ngResource', 'ngCookies',  'ngSanitize'])
             }
         };
     })
-    .run(function($rootScope, $location, Auth) {
-        // Redirect to login if route requires auth and you're not logged in
-        $rootScope.$on('$routeChangeStart', function(event, next) {
+    .run(function($rootScope, $window, Auth) {
+        // Redirect to login you're not logged in
+        $rootScope.$on('$routeChangeStart', function(event) {
             Auth.isLoggedInAsync(function(loggedIn) {
-                if (next.authenticate && !loggedIn) {
-                    $location.path('/login');
+                if (!loggedIn) {
+                    $window.location.href = '/login';
                 }
             });
         });

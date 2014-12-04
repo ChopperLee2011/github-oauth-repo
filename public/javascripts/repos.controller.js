@@ -1,4 +1,4 @@
-'use strick'
+'use strict';
 angular.module('oauth')
     .factory('reposFactory', function($resource) {
 
@@ -9,15 +9,16 @@ angular.module('oauth')
         });
     })
     .controller('reposCtrl', function($scope, $routeParams, $sce, reposFactory) {
-        $scope.find = function() {
+        $scope.repos = function() {
             $scope.repos = reposFactory.query();
         };
-        $scope.findOne = function() {
+        $scope.repoDetail = function() {
             $scope.repoName = $routeParams.repoName;
             $scope.issues = reposFactory.query({
                 repo: 'repo',
                 repoName: $routeParams.repoName
             });
+
         };
         $scope.issueDetail = function() {
             $scope.repoIssue = reposFactory.get({
@@ -25,7 +26,6 @@ angular.module('oauth')
                 repoName: $routeParams.repoName,
                 issueNum: $routeParams.issueNum
             });
-            console.log($scope.repoIssue.body);
             $scope.displayHtml = function() {
                 return $sce.trustAsHtml($scope.repoIssue.body);
             };

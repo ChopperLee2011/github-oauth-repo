@@ -18,7 +18,7 @@ angular.module('oauth', ['ngRoute', 'ngResource', 'ngCookies', 'ngSanitize'])
             .otherwise({
                 redirectTo: '/login'
             });
-        $locationProvider.html5Mode(true);
+        // $locationProvider.html5Mode(true);
         $httpProvider.interceptors.push('authInterceptor');
     })
     .factory('authInterceptor', function($rootScope, $q, $cookieStore, $location) {
@@ -29,10 +29,13 @@ angular.module('oauth', ['ngRoute', 'ngResource', 'ngCookies', 'ngSanitize'])
                 if ($cookieStore.get('token')) {
                     config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
                 }
-                // console.log(config);
-                return config;
+                $rootScope.$broadcast('loading');
+                return config || $q.when(config);
             },
-
+            'response': function(config) {
+                $rootScope.$broadcast('complete');
+                return config || $q.when(config);
+            },
             // Intercept 401s and redirect you to login
             responseError: function(response) {
                 if (response.status === 401) {
@@ -46,6 +49,25 @@ angular.module('oauth', ['ngRoute', 'ngResource', 'ngCookies', 'ngSanitize'])
             }
         };
     })
+    .directive('loadingIndicator', [function() {
+        return {
+            restrict: 'A',
+            templateUrl: "views/loading.html",
+            link: function(scope, iElement, iAttrs) {
+                scope.$on("loading", function(e) {
+                    iElement.css({
+                        "display": "block"
+                    });
+                });
+
+                scope.$on("complete", function(e) {
+                    iElement.css({
+                        "display": "none"
+                    });
+                });
+            }
+        };
+    }])
     .run(function($rootScope, $window, Auth) {
         // Redirect to login you're not logged in
         $rootScope.$on('$routeChangeStart', function(event) {

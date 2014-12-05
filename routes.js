@@ -7,6 +7,7 @@ module.exports = function(app, passport) {
     // route for home page
     app.get('/', function(req, res) {
         res.sendFile(app.get('views') + '/index.html');
+        // res.render('views/index.html');
     });
     app.get('/login', function(req, res) {
         res.sendFile(app.get('views') + '/login.html');

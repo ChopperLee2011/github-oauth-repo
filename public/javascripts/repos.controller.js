@@ -13,10 +13,13 @@ angular.module('oauth')
             $scope.repos = reposFactory.query();
         };
         $scope.repoDetail = function() {
+            $scope.noIssue=false;
             $scope.repoName = $routeParams.repoName;
             $scope.issues = reposFactory.query({
                 repo: 'repo',
                 repoName: $routeParams.repoName
+            },function(data){
+                if(data.length === 0) $scope.noIssue=true;
             });
 
         };
@@ -26,8 +29,5 @@ angular.module('oauth')
                 repoName: $routeParams.repoName,
                 issueNum: $routeParams.issueNum
             });
-            $scope.displayHtml = function() {
-                return $sce.trustAsHtml($scope.repoIssue.body);
-            };
         };
     });

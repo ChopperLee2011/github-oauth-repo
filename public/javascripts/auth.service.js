@@ -11,7 +11,10 @@ angular.module('oauth')
     .factory('Auth', function Auth(User, $cookieStore, $q) {
         var currentUser = {};
         if ($cookieStore.get('token')) {
-            currentUser = User.get();
+            User.get({}, function(user) {
+                ('' === user.avatarurl) && (user.avatarurl = "http://www.gravatar.com/avatar/" + user.gravatar_id);
+                currentUser = user;
+            });
         }
         return {
             logout: function() {

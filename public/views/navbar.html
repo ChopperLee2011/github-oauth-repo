@@ -1,5 +1,5 @@
-<div class="navbar navbar-default navbar-static-top" ng-controller="navCtrl">
-    <div class="navbar-header navbar-right">
+<nav class="navbar navbar-default navbar-static-top" role="navigation" ng-controller="navCtrl">
+    <div id="userInfo" class="nav navbar-nav navbar-right">
         <img ng-src="{{getCurrentUser().avatarurl}}" class="avatar" > <span>{{ getCurrentUser().username }} </span> / <a ng-click="logOut()">Logout</a>
     </div>
-</div>
+</nav>

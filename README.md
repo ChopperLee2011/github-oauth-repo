@@ -1,4 +1,4 @@
-oauth-github-repo
+github-oauth-repo
 ========
 ## install
 

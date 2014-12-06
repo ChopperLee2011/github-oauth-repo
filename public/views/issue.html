@@ -1,9 +1,9 @@
-<section ng-controller="reposCtrl" class="col-md-4 col-md-offset-4" ng-init="issueDetail()">
+<section ng-controller="issueCtrl" class="col-md-4 col-md-offset-4" ng-init="issueDetail()">
     <div loading-indicator></div>
 
-    <div class="panel panel-info" ng-model="repoIssue" ng-cloak>
+    <div class="panel panel-default" ng-if="repoIssue">
         <div class="panel-heading">
-            <h3 class="panel-title" ng-bind="repoIssue.title"></h3>
+            <img ng-src="{{repoIssue.user.avatar_url}}||'http://www.gravatar.com/avatar/'+{{repoIssue.user.gravatar_id}}" class="avatar"> <small class="panel-title" ng-bind="repoIssue.title"></small>
         </div>
         <div class="panel-body" ng-bind-html="repoIssue.body">
         </div>

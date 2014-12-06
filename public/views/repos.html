@@ -1,9 +1,17 @@
-<section ng-controller="reposCtrl" class="col-md-4 col-md-offset-4" ng-init="repos()">
+<section ng-controller="reposCtrl" class="col-md-4 col-md-offset-4" ng-init="reposList()">
     <div loading-indicator></div>
 
-    <div class="list-group">
-        <a ng-repeat="repo in repos" ng-href="/#/repos/repo/{{repo.name}}" class="list-group-item">
-            <img ng-src="{{repo.owner.avatar_url}}" class="avatar"> <small ng-bind="repo.owner.login"></small> / <small ng-bind="repo.name"></small>
-        </a>
+    <div class="panel panel-default" ng-if="repos">
+        <div class="panel-heading">Repositories</div>
+        <div class="list-group">
+            <a ng-repeat="repo in repos" ng-href="/#/repos/repo/{{repo.name}}" class="list-group-item">
+                <span class="glyphicon glyphicon-book" ng-if="!repo.fork"></span>
+                <span class="glyphicon glyphicon-cutlery" ng-if="repo.fork"></span>
+                <small ng-bind="repo.owner.login"></small> / <small ng-bind="repo.name"></small>
+                <span class="badge">{{repo.open_issues}}</span>
+            </a>
+        </div>
+
     </div>
+
 </section>

@@ -1,12 +1,20 @@
-<section ng-controller="reposCtrl" class="col-md-4 col-md-offset-4" ng-init="repoDetail()">
-    <div loading-indicator>hello</div>
+<section ng-controller="issueListCtrl" class="col-md-4 col-md-offset-4" ng-init="issueList()">
+    <div loading-indicator></div>
 
-    <div class="list-group">
-        <!-- <small ng-show="noIssue" class="list-group-item"> no issue, well done </small> -->
-        <div class="alert alert-success" role="alert" ng-show="noIssue">no issue, well done</div>
-        <a ng-repeat="issue in issues" ng-href="/#/repos/repo/{{repoName}}/{{issue.number}}" class="list-group-item">
-            <span class="glyphicon glyphicon-exclamation-sign" ng-if="issue.state==='open'"></span>
-            <span class="glyphicon glyphicon-ok-circle" ng-if="issue.state==='closed'"> </span> <small ng-bind="issue.title"></small>
-        </a>
+    <div class="alert alert-success" role="alert" ng-show="noIssue">no issues, well done!</div>
+
+
+    <div class="panel panel-default" ng-if="issues.length >0 ">
+        <div class="panel-heading">
+            <button class="btn btn-link btn-xs" ng-click="issueFilter('open')"> Open </button>
+            /
+            <button href="#" class="btn btn-link btn-xs" ng-click="issueFilter('closed')"> Closed </button>
+        </div>
+        <div class="list-group">
+            <a ng-repeat="issue in issues" ng-href="/#/repos/repo/{{repoName}}/{{issue.number}}" class="list-group-item">
+                <span class="glyphicon glyphicon-exclamation-sign" ng-if="issue.state==='open'"></span>
+                <span class="glyphicon glyphicon-ok-circle" ng-if="issue.state==='closed'"> </span> <small ng-bind="issue.title"></small>
+            </a>
+        </div>
     </div>
 </section>
